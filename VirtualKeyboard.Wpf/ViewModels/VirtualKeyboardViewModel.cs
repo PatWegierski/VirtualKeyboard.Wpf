@@ -10,6 +10,8 @@ namespace VirtualKeyboard.Wpf.ViewModels
 {
     class VirtualKeyboardViewModel : INotifyPropertyChanged
     {
+        public bool Accepted { get; private set; }
+
         private string _keyboardText;
         public string KeyboardText {
             get => _keyboardText;
@@ -65,6 +67,7 @@ namespace VirtualKeyboard.Wpf.ViewModels
         public Command RemoveCharacter { get; }
         public Command ChangeKeyboardType { get; }
         public Command Accept { get; }
+        public Command Discard { get; }
 
         public VirtualKeyboardViewModel(string initialValue)
         {
@@ -116,7 +119,16 @@ namespace VirtualKeyboard.Wpf.ViewModels
                 if (KeyboardType == KeyboardType.Alphabet) KeyboardType = KeyboardType.Special;
                 else KeyboardType = KeyboardType.Alphabet;
             });
-            Accept = new Command(a => VKeyboard.Close());
+            Accept = new Command(a =>
+            {
+                Accepted = true;
+                VKeyboard.Close(true);
+            });
+            Discard = new Command(a =>
+            {
+                Accepted = false;
+                VKeyboard.Close(false);
+            });
         }
 
         private void RemoveSubstring(string substring)

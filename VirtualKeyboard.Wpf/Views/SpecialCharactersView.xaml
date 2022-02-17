@@ -98,17 +98,19 @@
 
             <Grid Grid.Row="3">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="2*"/>
-                    <ColumnDefinition Width="4*"/>
+                    <ColumnDefinition Width="1.5*"/>
+                    <ColumnDefinition Width="1.5*"/>
+                    <ColumnDefinition Width="3*"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="2*"/>
                 </Grid.ColumnDefinitions>
-                <Button Grid.Column="0" Content="abc" Style="{DynamicResource KeyboardButtonStyle}" Command="{Binding ChangeKeyboardType}"/>
-                <Button Grid.Column="1" Content=" " Style="{DynamicResource KeyboardButtonStyle}" Command="{Binding AddCharacter}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Content}"/>
-                <Button Grid.Column="2" Content="." Style="{DynamicResource KeyboardButtonStyle}" Command="{Binding AddCharacter}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Content}"/>
-                <Button Grid.Column="3" Content="@" Style="{DynamicResource KeyboardButtonStyle}" Command="{Binding AddCharacter}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Content}"/>
-                <ContentControl Grid.Column="9" Content="{StaticResource AcceptButton}"/>
+                <Button Grid.Column="0" Content="↓" Style="{DynamicResource KeyboardButtonStyle}" Command="{Binding Discard}"/>
+                <Button Grid.Column="1" Content="abc" Style="{DynamicResource KeyboardButtonStyle}" Command="{Binding ChangeKeyboardType}"/>
+                <Button Grid.Column="2" Content=" " Style="{DynamicResource KeyboardButtonStyle}" Command="{Binding AddCharacter}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Content}"/>
+                <Button Grid.Column="3" Content="." Style="{DynamicResource KeyboardButtonStyle}" Command="{Binding AddCharacter}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Content}"/>
+                <Button Grid.Column="4" Content="@" Style="{DynamicResource KeyboardButtonStyle}" Command="{Binding AddCharacter}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Content}"/>
+                <ContentControl Grid.Column="5" Content="{StaticResource AcceptButton}"/>
             </Grid>
         </Grid>
     </Grid>

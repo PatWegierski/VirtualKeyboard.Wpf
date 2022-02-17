@@ -56,10 +56,15 @@ namespace VirtualKeyboard.Wpf
             ((ContentControl)_windowHost.FindName(_keyboardName)).Content = new VirtualKeyboardView();
             void handler(object s, CancelEventArgs a)
             {
-                var result = GetResult();
                 ((Window)s).Closing -= handler;
+
+                if (IsAccepted())
+                {
+                    var result = GetResult();
+                    _tcs?.SetResult(result);
+                }
+                
                 _windowHost = null;
-                _tcs?.SetResult(result);
                 _tcs = null;
             }
 
@@ -70,11 +75,17 @@ namespace VirtualKeyboard.Wpf
             return _tcs.Task;
         }
 
-        public static void Close()
+        public static void Close(bool accept)
         {
             if (_windowHost == null) throw new InvalidOperationException();
-
+            
             _windowHost.Close();
+        }
+
+        private static bool IsAccepted()
+        {
+            var viewModel = (VirtualKeyboardViewModel)_windowHost.DataContext;
+            return viewModel.Accepted;
         }
 
         private static string GetResult()
