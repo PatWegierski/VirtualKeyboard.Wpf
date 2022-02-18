@@ -24,6 +24,8 @@ namespace VirtualKeyboard.Wpf
         private static TaskCompletionSource<string> _tcs;
         private static Window _windowHost;
 
+        public static bool ShowDiscardButton { get; set; }
+
         public static void Config(Type hostType)
         {
             if (hostType.IsSubclassOf(typeof(Window))) _hostType = hostType;
@@ -51,7 +53,11 @@ namespace VirtualKeyboard.Wpf
 
             _tcs = new TaskCompletionSource<string>();
             _windowHost = (Window)Activator.CreateInstance(_hostType);
-            _windowHost.DataContext = new VirtualKeyboardViewModel(initialValue);
+            var viewModel = new VirtualKeyboardViewModel(initialValue)
+            {
+                ShowDiscardButton = ShowDiscardButton
+            };
+            _windowHost.DataContext = viewModel;
             ((ContentControl)_windowHost.FindName(_keyboardValueName)).Content = new KeyboardValueView();
             ((ContentControl)_windowHost.FindName(_keyboardName)).Content = new VirtualKeyboardView();
             void handler(object s, CancelEventArgs a)
@@ -75,7 +81,7 @@ namespace VirtualKeyboard.Wpf
             return _tcs.Task;
         }
 
-        public static void Close(bool accept)
+        public static void Close()
         {
             if (_windowHost == null) throw new InvalidOperationException();
             

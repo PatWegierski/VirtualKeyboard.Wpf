@@ -12,6 +12,17 @@ namespace VirtualKeyboard.Wpf.ViewModels
     {
         public bool Accepted { get; private set; }
 
+        private bool _showDiscardButton;
+        public bool ShowDiscardButton
+        {
+            get => _showDiscardButton;
+            set
+            {
+                _showDiscardButton = value;
+                NotifyPropertyChanged(nameof(ShowDiscardButton));
+            }
+        }
+
         private string _keyboardText;
         public string KeyboardText {
             get => _keyboardText;
@@ -75,7 +86,6 @@ namespace VirtualKeyboard.Wpf.ViewModels
             _keyboardType = KeyboardType.Alphabet;
             _uppercase = false;
             CaretPosition = _keyboardText.Length;
-
             AddCharacter = new Command(a =>
             {
                 if (a is string character)
@@ -122,12 +132,12 @@ namespace VirtualKeyboard.Wpf.ViewModels
             Accept = new Command(a =>
             {
                 Accepted = true;
-                VKeyboard.Close(true);
+                VKeyboard.Close();
             });
             Discard = new Command(a =>
             {
                 Accepted = false;
-                VKeyboard.Close(false);
+                VKeyboard.Close();
             });
         }
 
