@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 using VirtualKeyboard.Wpf.Types;
 
 namespace VirtualKeyboard.Wpf.ViewModels
 {
     class VirtualKeyboardViewModel : INotifyPropertyChanged
     {
+        private Format _format;
+
         public bool Accepted { get; private set; }
 
         private bool _showDiscardButton;
@@ -80,38 +77,43 @@ namespace VirtualKeyboard.Wpf.ViewModels
         public Command Accept { get; }
         public Command Discard { get; }
 
-        public VirtualKeyboardViewModel(string initialValue)
+        public VirtualKeyboardViewModel(string initialValue, Format format)
         {
             _keyboardText = initialValue;
-            _keyboardType = KeyboardType.Alphabet;
+            _format = format;
+            _keyboardType = GetKeyboardType(format);
             _uppercase = false;
             CaretPosition = _keyboardText.Length;
             AddCharacter = new Command(a =>
             {
-                if (a is string character)
-                    if (character.Length == 1)
-                    {
-                        if (Uppercase) character = character.ToUpper();
-                        if (!string.IsNullOrEmpty(SelectedValue))
-                        {
-                            RemoveSubstring(SelectedValue);
-                            KeyboardText = KeyboardText.Insert(CaretPosition, character);
-                            CaretPosition++;
-                            SelectedValue = "";
-                        }
-                        else
-                        {
-                            KeyboardText = KeyboardText.Insert(CaretPosition, character);
-                            CaretPosition++;
-                        }
-                    }
+                if (!(a is string character) || character.Length != 1) return;
+
+                if (Uppercase) character = character.ToUpper();
+
+                var tmpText = KeyboardText;
+                if (!string.IsNullOrEmpty(SelectedValue))
+                {
+                    tmpText = RemoveSubstring(SelectedValue);
+                }
+
+                tmpText = tmpText.Insert(CaretPosition, character);
+
+                if (!_format.Match(tmpText)) return;
+
+                KeyboardText = tmpText;
+                CaretPosition++;
+
+                if (!string.IsNullOrEmpty(SelectedValue))
+                {
+                    SelectedValue = string.Empty;
+                }
             });
             ChangeCasing = new Command(a => Uppercase = !Uppercase);
             RemoveCharacter = new Command(a =>
             {
                 if(!string.IsNullOrEmpty(SelectedValue))
                 {
-                    RemoveSubstring(SelectedValue);
+                    KeyboardText = RemoveSubstring(SelectedValue);
                 }
                 else
                 {
@@ -141,10 +143,22 @@ namespace VirtualKeyboard.Wpf.ViewModels
             });
         }
 
-        private void RemoveSubstring(string substring)
+        private static KeyboardType GetKeyboardType(Format format)
+        {
+            switch (format)
+            {
+                case Format.Decimal:
+                case Format.Integer:
+                    return KeyboardType.NumericOnly;
+                default:
+                    return KeyboardType.Alphabet;
+            }
+        }
+
+        private string RemoveSubstring(string substring)
         {
             var position = KeyboardText.IndexOf(substring);
-            KeyboardText = KeyboardText.Remove(position, substring.Length);
+            return KeyboardText.Remove(position, substring.Length);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

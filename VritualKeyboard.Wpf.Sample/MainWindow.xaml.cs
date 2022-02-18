@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -23,11 +24,19 @@ namespace VritualKeyboard.Wpf.Sample
         public MainWindow()
         {
             InitializeComponent();
+            VirtualKeyboard.Wpf.VKeyboard.ShowDiscardButton = true;
         }
 
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
             Label.Content = await VirtualKeyboard.Wpf.VKeyboard.OpenAsync();
+        }
+
+        private static readonly Regex _regex = new Regex("[^0-9.-]+"); 
+        private void UIElement_OnPreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            if (_regex.IsMatch(e.Text))
+                e.Handled = true;
         }
     }
 }

@@ -48,6 +48,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Behaviors\FormatBehavior.cs" />
     <Compile Include="Command.cs" />
     <Compile Include="Controls\AdvancedTextBox.cs" />
     <Compile Include="Converters\KeyboardTypeConverter.cs" />
@@ -55,6 +56,8 @@
     <Compile Include="DefaultKeyboardHost.xaml.cs">
       <DependentUpon>DefaultKeyboardHost.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Formatting\Format.cs" />
+    <Compile Include="Formatting\FormatHelper.cs" />
     <Compile Include="Types\KeyboardType.cs" />
     <Compile Include="Types\UppercaseMode.cs" />
     <Compile Include="ViewModels\VirtualKeyboardViewModel.cs" />
@@ -63,6 +66,9 @@
     </Compile>
     <Compile Include="Views\KeyboardValueView.xaml.cs">
       <DependentUpon>KeyboardValueView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NumbersOnlyView.xaml.cs">
+      <DependentUpon>NumbersOnlyView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SpecialCharactersView.xaml.cs">
       <DependentUpon>SpecialCharactersView.xaml</DependentUpon>
@@ -90,6 +96,10 @@
     <Page Include="Views\KeyboardValueView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NumbersOnlyView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\SpecialCharactersView.xaml">
       <SubType>Designer</SubType>
