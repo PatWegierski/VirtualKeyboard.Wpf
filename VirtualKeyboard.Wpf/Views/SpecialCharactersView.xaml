@@ -5,6 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:VirtualKeyboard.Wpf.Views"
+             xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=PresentationFramework"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
@@ -98,17 +99,73 @@
 
             <Grid Grid.Row="3">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="2*"/>
-                    <ColumnDefinition Width="4*"/>
+                    <ColumnDefinition>
+                        <ColumnDefinition.Style>
+                            <Style TargetType="ColumnDefinition">
+                                <Style.Triggers>
+                                    <Trigger Property="componentModel:DesignerProperties.IsInDesignMode"
+                                             Value="True">
+                                        <Setter Property="Width"
+                                                Value="1.5*" />
+                                    </Trigger>
+                                    <DataTrigger Binding="{Binding ShowDiscardButton}" Value="False">
+                                        <Setter Property="Width" Value="0" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ShowDiscardButton}" Value="True">
+                                        <Setter Property="Width" Value="1.5*" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ColumnDefinition.Style>
+                    </ColumnDefinition>
+                    <ColumnDefinition>
+                        <ColumnDefinition.Style>
+                            <Style TargetType="ColumnDefinition">
+                                <Style.Triggers>
+                                    <Trigger Property="componentModel:DesignerProperties.IsInDesignMode"
+                                             Value="True">
+                                        <Setter Property="Width"
+                                                Value="1.5*" />
+                                    </Trigger>
+                                    <DataTrigger Binding="{Binding ShowDiscardButton}" Value="False">
+                                        <Setter Property="Width" Value="2*" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ShowDiscardButton}" Value="True">
+                                        <Setter Property="Width" Value="1.5*" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ColumnDefinition.Style>
+                    </ColumnDefinition>
+                    <ColumnDefinition>
+                        <ColumnDefinition.Style>
+                            <Style TargetType="ColumnDefinition">
+                                <Style.Triggers>
+                                    <Trigger Property="componentModel:DesignerProperties.IsInDesignMode"
+                                             Value="True">
+                                        <Setter Property="Width"
+                                                Value="3*" />
+                                    </Trigger>
+                                    <DataTrigger Binding="{Binding ShowDiscardButton}" Value="False">
+                                        <Setter Property="Width" Value="4*" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ShowDiscardButton}" Value="True">
+                                        <Setter Property="Width" Value="3*" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ColumnDefinition.Style>
+                    </ColumnDefinition>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="2*"/>
                 </Grid.ColumnDefinitions>
-                <Button Grid.Column="0" Content="abc" Style="{DynamicResource KeyboardButtonStyle}" Command="{Binding ChangeKeyboardType}"/>
-                <Button Grid.Column="1" Content=" " Style="{DynamicResource KeyboardButtonStyle}" Command="{Binding AddCharacter}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Content}"/>
-                <Button Grid.Column="2" Content="." Style="{DynamicResource KeyboardButtonStyle}" Command="{Binding AddCharacter}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Content}"/>
-                <Button Grid.Column="3" Content="@" Style="{DynamicResource KeyboardButtonStyle}" Command="{Binding AddCharacter}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Content}"/>
-                <ContentControl Grid.Column="9" Content="{StaticResource AcceptButton}"/>
+                <Button Grid.Column="0" Content="↓" Style="{DynamicResource KeyboardButtonStyle}" Command="{Binding Discard}"/>
+                <Button Grid.Column="1" Content="abc" Style="{DynamicResource KeyboardButtonStyle}" Command="{Binding ChangeKeyboardType}"/>
+                <Button Grid.Column="2" Content=" " Style="{DynamicResource KeyboardButtonStyle}" Command="{Binding AddCharacter}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Content}"/>
+                <Button Grid.Column="3" Content="." Style="{DynamicResource KeyboardButtonStyle}" Command="{Binding AddCharacter}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Content}"/>
+                <Button Grid.Column="4" Content="@" Style="{DynamicResource KeyboardButtonStyle}" Command="{Binding AddCharacter}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Content}"/>
+                <ContentControl Grid.Column="5" Content="{StaticResource AcceptButton}"/>
             </Grid>
         </Grid>
     </Grid>
