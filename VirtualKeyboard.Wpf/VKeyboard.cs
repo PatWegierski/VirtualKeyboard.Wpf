@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using VirtualKeyboard.Wpf.Behaviors;
 using VirtualKeyboard.Wpf.Controls;
 using VirtualKeyboard.Wpf.ViewModels;
 using VirtualKeyboard.Wpf.Views;
@@ -42,18 +40,19 @@ namespace VirtualKeyboard.Wpf
                 var prop = memberSelectorExpression.Member as PropertyInfo;
                 if (prop == null) return;
                 var initValue = (string)prop.GetValue(s);
-                var value = await OpenAsync(initValue);
+                var format = (Format) ((DependencyObject)s).GetValue(FormatBehavior.FormatProperty);
+                var value = await OpenAsync(initValue, format);
                 prop.SetValue(s, value, null);
             }));
         }
 
-        public static Task<string> OpenAsync(string initialValue = "")
+        public static Task<string> OpenAsync(string initialValue = "", Format format = Format.Alphabet)
         {
             if (_windowHost != null) throw new InvalidOperationException();
 
             _tcs = new TaskCompletionSource<string>();
             _windowHost = (Window)Activator.CreateInstance(_hostType);
-            var viewModel = new VirtualKeyboardViewModel(initialValue)
+            var viewModel = new VirtualKeyboardViewModel(initialValue, format)
             {
                 ShowDiscardButton = ShowDiscardButton
             };

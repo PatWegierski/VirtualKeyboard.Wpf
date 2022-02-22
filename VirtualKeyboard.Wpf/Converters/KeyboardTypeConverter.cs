@@ -10,7 +10,7 @@ using VirtualKeyboard.Wpf.Views;
 
 namespace VirtualKeyboard.Wpf.Converters
 {
-    class KeyboardTypeConverter : IValueConverter
+    internal class KeyboardTypeConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -19,6 +19,7 @@ namespace VirtualKeyboard.Wpf.Converters
             {
                 case KeyboardType.Alphabet: return new AlphabetView();
                 case KeyboardType.Special: return new SpecialCharactersView();
+                case KeyboardType.NumericOnly: return new NumbersOnlyView();
             }
             return null;
         }

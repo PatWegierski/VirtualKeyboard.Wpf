@@ -4,10 +4,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:VritualKeyboard.Wpf.Sample"
+        xmlns:behaviors="clr-namespace:VirtualKeyboard.Wpf.Behaviors;assembly=VirtualKeyboard.Wpf"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <UniformGrid>
-        <TextBox Height="40"/>
+        <TextBox Height="40" behaviors:FormatBehavior.Format="Integer" />
+        <TextBox Height="40"  />
         <Button Click="Button_Click">OpenDialog</Button>
         <Label x:Name="Label"/>
     </UniformGrid>

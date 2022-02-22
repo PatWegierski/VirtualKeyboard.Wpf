@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace VirtualKeyboard.Wpf.Types
+﻿namespace VirtualKeyboard.Wpf.Types
 {
-    enum KeyboardType
+    internal enum KeyboardType
     {
         Alphabet,
-        Special
+        Special,
+        NumericOnly
     }
 }
