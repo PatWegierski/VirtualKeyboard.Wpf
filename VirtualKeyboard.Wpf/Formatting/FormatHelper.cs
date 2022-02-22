@@ -15,8 +15,6 @@ namespace VirtualKeyboard.Wpf
                     return _regexDecimal.IsMatch(text);
                 case Format.Integer:
                     return _regexInteger.IsMatch(text);
-                case Format.Alphabet:
-                    return true;
                 default:
                     return false;
             }

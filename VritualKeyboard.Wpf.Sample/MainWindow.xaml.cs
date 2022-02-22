@@ -13,6 +13,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using VirtualKeyboard.Wpf;
+using VirtualKeyboard.Wpf.Types;
 
 namespace VritualKeyboard.Wpf.Sample
 {
@@ -29,14 +31,7 @@ namespace VritualKeyboard.Wpf.Sample
 
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
-            Label.Content = await VirtualKeyboard.Wpf.VKeyboard.OpenAsync();
-        }
-
-        private static readonly Regex _regex = new Regex("[^0-9.-]+"); 
-        private void UIElement_OnPreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
-            if (_regex.IsMatch(e.Text))
-                e.Handled = true;
+            Label.Content = await VirtualKeyboard.Wpf.VKeyboard.OpenAsync(type:KeyboardType.Alphabet);
         }
     }
 }

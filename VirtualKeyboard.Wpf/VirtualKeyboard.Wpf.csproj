@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Behaviors\FormatBehavior.cs" />
+    <Compile Include="Behaviors\KeyboardType.cs" />
     <Compile Include="Command.cs" />
     <Compile Include="Controls\AdvancedTextBox.cs" />
     <Compile Include="Converters\KeyboardTypeConverter.cs" />

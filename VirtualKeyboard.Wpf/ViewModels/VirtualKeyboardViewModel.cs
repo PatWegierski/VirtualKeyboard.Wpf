@@ -1,11 +1,13 @@
 ﻿using System.ComponentModel;
+using System.Text.RegularExpressions;
 using VirtualKeyboard.Wpf.Types;
 
 namespace VirtualKeyboard.Wpf.ViewModels
 {
     class VirtualKeyboardViewModel : INotifyPropertyChanged
     {
-        private Format _format;
+        private Format? _format;
+        private string _regex;
 
         public bool Accepted { get; private set; }
 
@@ -77,11 +79,12 @@ namespace VirtualKeyboard.Wpf.ViewModels
         public Command Accept { get; }
         public Command Discard { get; }
 
-        public VirtualKeyboardViewModel(string initialValue, Format format)
+        public VirtualKeyboardViewModel(string initialValue, KeyboardType type, string regex = null, Format? format = null)
         {
             _keyboardText = initialValue;
+            _keyboardType = type;
+            _regex = regex;
             _format = format;
-            _keyboardType = GetKeyboardType(format);
             _uppercase = false;
             CaretPosition = _keyboardText.Length;
             AddCharacter = new Command(a =>
@@ -98,7 +101,14 @@ namespace VirtualKeyboard.Wpf.ViewModels
 
                 tmpText = tmpText.Insert(CaretPosition, character);
 
-                if (!_format.Match(tmpText)) return;
+                if (_regex != null)
+                {
+                    if(!Regex.IsMatch(tmpText, _regex)) return;
+                }
+                else if (_format != null)
+                {
+                    if (!_format.Value.Match(tmpText)) return;
+                }
 
                 KeyboardText = tmpText;
                 CaretPosition++;
@@ -141,18 +151,6 @@ namespace VirtualKeyboard.Wpf.ViewModels
                 Accepted = false;
                 VKeyboard.Close();
             });
-        }
-
-        private static KeyboardType GetKeyboardType(Format format)
-        {
-            switch (format)
-            {
-                case Format.Decimal:
-                case Format.Integer:
-                    return KeyboardType.NumericOnly;
-                default:
-                    return KeyboardType.Alphabet;
-            }
         }
 
         private string RemoveSubstring(string substring)

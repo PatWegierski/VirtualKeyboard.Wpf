@@ -1,6 +1,6 @@
 ﻿namespace VirtualKeyboard.Wpf.Types
 {
-    internal enum KeyboardType
+    public enum KeyboardType
     {
         Alphabet,
         Special,

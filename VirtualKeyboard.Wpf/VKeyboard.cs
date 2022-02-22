@@ -40,19 +40,34 @@ namespace VirtualKeyboard.Wpf
                 var prop = memberSelectorExpression.Member as PropertyInfo;
                 if (prop == null) return;
                 var initValue = (string)prop.GetValue(s);
-                var format = (Format) ((DependencyObject)s).GetValue(FormatBehavior.FormatProperty);
-                var value = await OpenAsync(initValue, format);
+                var kind = ((DependencyObject)s).GetValue(KeyboardType.KeyboardTypeProperty);
+                Types.KeyboardType type = kind == null ? Types.KeyboardType.Alphabet : (Types.KeyboardType)kind;
+                var format = ((DependencyObject)s).GetValue(FormatBehavior.FormatProperty);
+                var regex = ((DependencyObject)s).GetValue(FormatBehavior.RegexProperty);
+                string value;
+                if (regex != null)
+                {
+                    value = await OpenAsync(initValue, type, (string)regex);
+                }
+                else if (format != null)
+                {
+                    value = await OpenAsync(initValue, type, format:(Format)format);
+                }
+                else
+                {
+                    value = await OpenAsync(initValue, type);
+                }
                 prop.SetValue(s, value, null);
             }));
         }
 
-        public static Task<string> OpenAsync(string initialValue = "", Format format = Format.Alphabet)
+        public static Task<string> OpenAsync(string initialValue = "", Types.KeyboardType type = Types.KeyboardType.Alphabet, string regex = null, Format? format = null)
         {
             if (_windowHost != null) throw new InvalidOperationException();
 
             _tcs = new TaskCompletionSource<string>();
             _windowHost = (Window)Activator.CreateInstance(_hostType);
-            var viewModel = new VirtualKeyboardViewModel(initialValue, format)
+            var viewModel = new VirtualKeyboardViewModel(initialValue, type, regex, format)
             {
                 ShowDiscardButton = ShowDiscardButton
             };
