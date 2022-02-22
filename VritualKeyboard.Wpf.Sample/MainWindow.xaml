@@ -27,6 +27,11 @@
         <TextBox Margin="20" Height="40" Width="150" />
 
         <TextBlock Margin="20" Height="40" Width="150" TextWrapping="WrapWithOverflow">
+            Password box
+        </TextBlock>
+        <PasswordBox Margin="20" Height="40" Width="150" PasswordChar="*"  />
+
+        <TextBlock Margin="20" Height="40" Width="150" TextWrapping="WrapWithOverflow">
             Custom regex (eg: only letters)
         </TextBlock>
         <TextBox Margin="20" Height="40" Width="150" keyboardBehaviors:FormatBehavior.Regex="^[a-zA-Z]*$" />

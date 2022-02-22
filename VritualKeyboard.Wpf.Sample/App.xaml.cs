@@ -18,6 +18,7 @@ namespace VritualKeyboard.Wpf.Sample
         public App()
         {
             VKeyboard.Listen<TextBox>(e => e.Text);
+            VKeyboard.Listen<PasswordBox>(e => e.Password);
         }
     }
 }

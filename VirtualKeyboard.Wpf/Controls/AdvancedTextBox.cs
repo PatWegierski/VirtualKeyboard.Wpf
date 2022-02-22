@@ -17,6 +17,16 @@ namespace VirtualKeyboard.Wpf.Controls
 {
     class AdvancedTextBox : TextBox
     {
+        public char? PasswordChar
+        {
+            get => (char?)GetValue(PasswordCharProperty);
+            set => SetValue(PasswordCharProperty, value);
+        }
+
+        public static readonly DependencyProperty PasswordCharProperty =
+            DependencyProperty.Register("PasswordChar", typeof(char?), typeof(AdvancedTextBox), 
+                new PropertyMetadata(null));
+
         public int CaretPosition
         {
             get { return (int)GetValue(CaretPositionProperty); }
@@ -79,7 +89,7 @@ namespace VirtualKeyboard.Wpf.Controls
             var s = (AdvancedTextBox)sender;
             int caretPosition = s.CaretPosition;
             string value = e.NewValue as string;
-            s.Text = value;
+            s.Text = s.PasswordChar != null ? string.Join(string.Empty, Enumerable.Repeat(s.PasswordChar, value.Length)) : value;
             s.CaretIndex = caretPosition <= value.Length ? caretPosition : value.Length;
         }
     }

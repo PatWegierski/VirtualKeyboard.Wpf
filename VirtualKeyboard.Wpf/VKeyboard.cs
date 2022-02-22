@@ -45,23 +45,29 @@ namespace VirtualKeyboard.Wpf
                 var format = ((DependencyObject)s).GetValue(FormatBehavior.FormatProperty);
                 var regex = ((DependencyObject)s).GetValue(FormatBehavior.RegexProperty);
                 string value;
+                char? passwordChar = null;
+                if (s is PasswordBox p) passwordChar = p.PasswordChar;
                 if (regex != null)
                 {
-                    value = await OpenAsync(initValue, type, (string)regex);
+                    value = await OpenAsync(initValue, type, (string)regex, passwordChar:passwordChar);
                 }
                 else if (format != null)
                 {
-                    value = await OpenAsync(initValue, type, format:(Format)format);
+                    value = await OpenAsync(initValue, type, format:(Format)format, passwordChar:passwordChar);
                 }
                 else
                 {
-                    value = await OpenAsync(initValue, type);
+                    value = await OpenAsync(initValue, type, passwordChar:passwordChar);
                 }
                 prop.SetValue(s, value, null);
             }));
         }
 
-        public static Task<string> OpenAsync(string initialValue = "", Types.KeyboardType type = Types.KeyboardType.Alphabet, string regex = null, Format? format = null)
+        public static Task<string> OpenAsync(string initialValue = "", 
+            Types.KeyboardType type = Types.KeyboardType.Alphabet, 
+            string regex = null, 
+            Format? format = null, 
+            char? passwordChar = null)
         {
             if (_windowHost != null) throw new InvalidOperationException();
 
@@ -72,7 +78,12 @@ namespace VirtualKeyboard.Wpf
                 ShowDiscardButton = ShowDiscardButton
             };
             _windowHost.DataContext = viewModel;
-            ((ContentControl)_windowHost.FindName(_keyboardValueName)).Content = new KeyboardValueView();
+            var keyboardValueView = new KeyboardValueView();
+            ((ContentControl)_windowHost.FindName(_keyboardValueName)).Content = keyboardValueView;
+            if (passwordChar != null)
+            {
+                keyboardValueView.TextBox.PasswordChar = passwordChar;
+            }
             ((ContentControl)_windowHost.FindName(_keyboardName)).Content = new VirtualKeyboardView();
             void handler(object s, CancelEventArgs a)
             {
