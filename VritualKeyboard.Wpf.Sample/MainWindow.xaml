@@ -4,13 +4,34 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:VritualKeyboard.Wpf.Sample"
-        xmlns:behaviors="clr-namespace:VirtualKeyboard.Wpf.Behaviors;assembly=VirtualKeyboard.Wpf"
+        xmlns:keyboardBehaviors="clr-namespace:VirtualKeyboard.Wpf.Behaviors;assembly=VirtualKeyboard.Wpf"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <UniformGrid>
-        <TextBox Height="40" behaviors:FormatBehavior.Format="Integer" />
-        <TextBox Height="40"  />
-        <Button Click="Button_Click">OpenDialog</Button>
-        <Label x:Name="Label"/>
-    </UniformGrid>
+        Title="MainWindow" Width="800">
+    <WrapPanel>
+        <Label Margin="20" Height="40" Width="150" Content="Numeric only:" />
+        <TextBox Margin="20" Height="40" Width="150" keyboardBehaviors:KeyboardType.Type="NumericOnly" />
+
+        <TextBlock Margin="20" Height="40" Width="150" TextWrapping="WrapWithOverflow">
+            Numeric only: (integer format)
+        </TextBlock>
+        <TextBox Margin="20" Height="40" Width="150" keyboardBehaviors:KeyboardType.Type="NumericOnly" keyboardBehaviors:FormatBehavior.Format="Integer" />
+
+        <TextBlock Margin="20" Height="40" Width="150" TextWrapping="WrapWithOverflow">
+            Numeric only: (decimal format)
+        </TextBlock>
+        <TextBox Margin="20" Height="40" Width="150" keyboardBehaviors:KeyboardType.Type="NumericOnly" keyboardBehaviors:FormatBehavior.Format="Decimal" />
+
+        <TextBlock Margin="20" Height="40" Width="150" TextWrapping="WrapWithOverflow">
+            Default
+        </TextBlock>
+        <TextBox Margin="20" Height="40" Width="150" />
+
+        <TextBlock Margin="20" Height="40" Width="150" TextWrapping="WrapWithOverflow">
+            Custom regex (eg: only letters)
+        </TextBlock>
+        <TextBox Margin="20" Height="40" Width="150" keyboardBehaviors:FormatBehavior.Regex="^[a-zA-Z]*$" />
+
+        <Button Margin="20" Height="40" Width="150" Click="Button_Click">OpenDialog</Button>
+        <Label Width="150" BorderBrush="Black" BorderThickness="1" Margin="20" Height="40" x:Name="Label"/>
+    </WrapPanel>
 </Window>

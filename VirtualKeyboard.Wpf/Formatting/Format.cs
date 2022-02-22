@@ -2,7 +2,6 @@
 {
     public enum Format
     {
-        Alphabet,
         Decimal,
         Integer
     }
