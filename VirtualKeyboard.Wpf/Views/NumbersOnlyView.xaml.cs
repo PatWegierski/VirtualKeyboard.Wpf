@@ -16,7 +16,7 @@ using System.Windows.Shapes;
 namespace VirtualKeyboard.Wpf.Views
 {
     /// <summary>
-    /// Logika interakcji dla klasy SpecialCharactersView.xaml
+    /// Logika interakcji dla klasy NumbersOnlyView.xaml
     /// </summary>
     partial class NumbersOnlyView : UserControl
     {
