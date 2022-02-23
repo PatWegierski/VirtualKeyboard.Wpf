@@ -3,6 +3,7 @@
     public enum Format
     {
         Decimal,
-        Integer
+        Integer,
+        Alphanumeric
     }
 }

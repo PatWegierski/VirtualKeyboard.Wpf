@@ -6,8 +6,7 @@ namespace VirtualKeyboard.Wpf.ViewModels
 {
     class VirtualKeyboardViewModel : INotifyPropertyChanged
     {
-        private Format? _format;
-        private string _regex;
+        public Regex Regex { get; }
 
         public bool Accepted { get; private set; }
 
@@ -83,8 +82,24 @@ namespace VirtualKeyboard.Wpf.ViewModels
         {
             _keyboardText = initialValue;
             _keyboardType = type;
-            _regex = regex;
-            _format = format;
+            Regex = regex == null ? null : new Regex(regex);
+            if (Regex == null && format != null)
+            {
+                Regex = format.Value.GetRegex();
+            }
+
+            if (Regex == null)
+            {
+                switch (_keyboardType)
+                {
+                    case KeyboardType.NumericOnly:
+                        Regex = Format.Decimal.GetRegex();
+                        break;
+                    case KeyboardType.Alphabet:
+                        Regex = Format.Alphanumeric.GetRegex();
+                        break;
+                }
+            }
             _uppercase = false;
             CaretPosition = _keyboardText.Length;
             AddCharacter = new Command(a =>
@@ -101,15 +116,10 @@ namespace VirtualKeyboard.Wpf.ViewModels
 
                 tmpText = tmpText.Insert(CaretPosition, character);
 
-                if (_regex != null)
+                if (Regex != null)
                 {
-                    if(!Regex.IsMatch(tmpText, _regex)) return;
+                    if(!Regex.IsMatch(tmpText)) return;
                 }
-                else if (_format != null)
-                {
-                    if (!_format.Value.Match(tmpText)) return;
-                }
-
                 KeyboardText = tmpText;
                 CaretPosition++;
 

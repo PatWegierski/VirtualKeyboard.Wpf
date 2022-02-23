@@ -109,7 +109,8 @@ namespace VirtualKeyboard.Wpf.Behaviors
             }
 
             var format = (Format)textBox.GetValue(FormatProperty);
-            e.Handled = !format.Match(tmpText.Insert(textBox.CaretIndex, e.Text));
+            var regex = format.GetRegex();
+            e.Handled = regex != null && !format.GetRegex().IsMatch(tmpText.Insert(textBox.CaretIndex, e.Text));
         }
     }
 }
