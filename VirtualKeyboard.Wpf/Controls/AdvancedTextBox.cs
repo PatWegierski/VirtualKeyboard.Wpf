@@ -64,6 +64,7 @@ namespace VirtualKeyboard.Wpf.Controls
         {
             SelectionChanged += AdvancedTextBox_SelectionChanged;
             TextChanged += (s, e) => SetValue(TextValueProperty, Text);
+            Loaded += (s, e) => Focus();
         }
 
         private void AdvancedTextBox_SelectionChanged(object sender, RoutedEventArgs e)

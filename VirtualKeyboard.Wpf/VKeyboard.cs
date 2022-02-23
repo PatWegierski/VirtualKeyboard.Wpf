@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using VirtualKeyboard.Wpf.Behaviors;
 using VirtualKeyboard.Wpf.Controls;
 using VirtualKeyboard.Wpf.ViewModels;
@@ -35,6 +36,15 @@ namespace VirtualKeyboard.Wpf
             EventManager.RegisterClassHandler(typeof(T), UIElement.PreviewMouseLeftButtonDownEvent, (RoutedEventHandler)(async (s, e) =>
             {
                 if (s is AdvancedTextBox) return;
+
+                IInputElement inputElement = s as IInputElement;
+                bool oldFocusable = false;
+                if (inputElement != null)
+                {
+                    oldFocusable = inputElement.Focusable;
+                    inputElement.Focusable = false;
+                }
+
                 var memberSelectorExpression = property.Body as MemberExpression;
                 if (memberSelectorExpression == null) return;
                 var prop = memberSelectorExpression.Member as PropertyInfo;
@@ -60,7 +70,12 @@ namespace VirtualKeyboard.Wpf
                     value = await OpenAsync(initValue, type, passwordChar:passwordChar);
                 }
 
-                if(value != null) prop.SetValue(s, value, null);
+                if (inputElement != null)
+                {
+                    inputElement.Focusable = oldFocusable;
+                }
+
+                if (value != null) prop.SetValue(s, value, null);
             }));
         }
 
