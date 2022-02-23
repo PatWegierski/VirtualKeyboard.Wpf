@@ -59,7 +59,8 @@ namespace VirtualKeyboard.Wpf
                 {
                     value = await OpenAsync(initValue, type, passwordChar:passwordChar);
                 }
-                prop.SetValue(s, value, null);
+
+                if(value != null) prop.SetValue(s, value, null);
             }));
         }
 
@@ -93,6 +94,10 @@ namespace VirtualKeyboard.Wpf
                 {
                     var result = GetResult();
                     _tcs?.SetResult(result);
+                }
+                else
+                {
+                    _tcs.SetResult(null);
                 }
                 
                 _windowHost = null;
